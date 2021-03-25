@@ -1,35 +1,52 @@
 package comibm.demo;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import comibm.demo.entity.Order;
+import comibm.demo.service.OrderService;
+
 @RestController
-public class OrderController {
+public class OrderController { //frontend
+	@Autowired    //used for DI
+	OrderService orderService;  //DI
 	@PostMapping("/order")
-	String createOrder() {
-		return "success";
+	String createOrder(@RequestBody @Valid Order order , BindingResult bindingResult) {
+		if(bindingResult.hasErrors()) {
+			throw new IllegalArgumentException("Something went wrong, please retry!");
+		}
+		System.out.println(order);
+		return orderService.createOrder(order);
 	}
+
 	@GetMapping("/order")
 	String getOrder() {
 		return "Order created";
 	}
+
 	@PutMapping("/order/{id}")
 	String updateOrder(@PathVariable("id") int orderId) {
 		System.out.println(orderId);
 		return "order updated";
-		
+
 	}
+
 	@DeleteMapping("/order/{id}")
-	String deleteOrder(@PathVariable("id") int orderId , HttpRequest httpRequest) {
+	String deleteOrder(@PathVariable("id") int orderId, HttpRequest httpRequest) {
 		System.out.println(httpRequest.getHeaders());
 		System.out.println(orderId);
 		return "order deleted";
-		
+
 	}
-	
+
 }
