@@ -2,6 +2,7 @@ package comibm.demo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,16 +20,17 @@ public class OrderService {  //spring bean
 	}
 	
 	public List<Order>getOrders(){
-		return new ArrayList<Order>();
+		return orderRepository.findAll();
 	}
 	
-	public Order getOrder(int id) {
-		return new Order();
+	public Optional<Order> getOrder(String id) {
+		return orderRepository.findById(id);
 	}
 
-	public void updateOrder(int id) {
+	public void updateOrder(Order order) {
 		// TODO Auto-generated method stub
 		//return "order updated";
+		orderRepository.save(order);
 	}
 
 	public void deleteOrder(int orderId) {
