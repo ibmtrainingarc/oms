@@ -3,15 +3,19 @@ package comibm.demo.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import comibm.demo.entity.Order;
+import comibm.demo.repo.OrderRepository;
 
 @Service
 public class OrderService {  //spring bean
-	
+	@Autowired
+	OrderRepository orderRepository;
 	public String createOrder(Order order) {
-		return "order created";
+		Order savedOrder = orderRepository.save(order);
+		return savedOrder.getId();
 	}
 	
 	public List<Order>getOrders(){
